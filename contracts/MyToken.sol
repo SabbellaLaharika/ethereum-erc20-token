@@ -53,6 +53,30 @@ contract MyToken {
         return true;
     }
 
+    // Function to transfer tokens from one address to another using allowance
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+        // Validate recipient is not zero address
+        require(_to != address(0), "Cannot transfer to zero address");
+        
+        // Validate sender has sufficient balance
+        require(balanceOf[_from] >= _value, "Insufficient balance");
+        
+        // Validate caller has sufficient allowance
+        require(allowance[_from][msg.sender] >= _value, "Insufficient allowance");
+        
+        // Subtract from owner's balance
+        balanceOf[_from] -= _value;
+        // Add to recipient's balance
+        balanceOf[_to] += _value;
+        // Decrease allowance
+        allowance[_from][msg.sender] -= _value;
+        
+        // Emit Transfer event
+        emit Transfer(_from, _to, _value);
+        
+        return true;
+    }
+
     // Constructor to initialize total supply and assign to creator
     constructor(uint256 _totalSupply) {
         // set totalSupply from parameter
