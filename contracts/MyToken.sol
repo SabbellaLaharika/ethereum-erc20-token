@@ -39,6 +39,20 @@ contract MyToken {
         return true;
     }
 
+    // Function to approve another address to spend tokens on your behalf
+    function approve(address _spender, uint256 _value) public returns (bool success) {
+        // Validate spender is not zero address
+        require(_spender != address(0), "Cannot approve zero address");
+        
+        // Set allowance for spender
+        allowance[msg.sender][_spender] = _value;
+        
+        // Emit Approval event
+        emit Approval(msg.sender, _spender, _value);
+        
+        return true;
+    }
+
     // Constructor to initialize total supply and assign to creator
     constructor(uint256 _totalSupply) {
         // set totalSupply from parameter
