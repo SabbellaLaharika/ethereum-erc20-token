@@ -20,6 +20,25 @@ contract MyToken {
     // Nested mapping for allowances: owner => (spender => amount)
     mapping(address => mapping(address => uint256)) public allowance;
 
+    // Function to transfer tokens from caller to another address
+    function transfer(address _to, uint256 _value) public returns (bool success) {
+        // Validate that recipient is not zero address
+        require(_to != address(0), "Cannot transfer to zero address");
+        
+        // Validate sender has sufficient balance
+        require(balanceOf[msg.sender] >= _value, "Insufficient balance");
+        
+        // Subtract from sender's balance
+        balanceOf[msg.sender] -= _value;
+        // Add to recipient's balance
+        balanceOf[_to] += _value;
+        
+        // Emit Transfer event
+        emit Transfer(msg.sender, _to, _value);
+        
+        return true;
+    }
+
     // Constructor to initialize total supply and assign to creator
     constructor(uint256 _totalSupply) {
         // set totalSupply from parameter
