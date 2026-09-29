@@ -77,6 +77,16 @@ contract MyToken {
         return true;
     }
 
+    // Function to get total supply (already public, but explicit function is clearer)
+    function getTotalSupply() public view returns (uint256) {
+        return totalSupply;
+    }
+    
+    // Function to get token information as a single call
+    function getTokenInfo() public view returns (string memory, string memory, uint8, uint256) {
+        return (name, symbol, decimals, totalSupply);
+    }
+
     // Constructor to initialize total supply and assign to creator
     constructor(uint256 _totalSupply) {
         // set totalSupply from parameter
